@@ -5,17 +5,19 @@ terraform {
       version = "3.44.0"
     }
   }
+  backend "s3" {
+    bucket = "circle-ci-backend-20220215013957114500000001"
+    key    = "terraform/webapp/terraform.tfstate"
+    region = "us-east-1"
+  }
+
   required_version = "> 0.14"
+
 }
+
 
 provider "aws" {
   region = var.region
-}
-
-backend "s3" {
-   bucket = "circle-ci-backend-20220215013957114500000001"
-   key    = "terraform/webapp/terraform.tfstate"
-   region = "us-east-1"
 }
 
 resource "random_uuid" "randomid" {}
@@ -75,3 +77,4 @@ resource "aws_s3_bucket_object" "app" {
 output "Endpoint" {
   value = aws_s3_bucket.app.website_endpoint
 }
+
